@@ -48,7 +48,7 @@ var autocom = {
 
         autocom.enable({
             container: container,
-            input: input, 
+            input: input,
             url: url,
             fetchOnce: fetchOnce,
             fields: fields,
@@ -135,7 +135,7 @@ var autocom = {
                     input = container.querySelector(input);
                 var name = input.name || input.id;
                 if (!name) {
-                    console.warn("input-param has no name:"); 
+                    console.warn("input-param has no name:");
                     return;
                 }
                 var value = input.value || input.textContent || "";

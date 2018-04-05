@@ -1341,7 +1341,7 @@ declare module "sequelize" {
      * A string or a data type
      */
     type: DataTypeAbstract,
-    
+
     allowNull?: boolean,
 
     values?: Array<any>,
@@ -7414,4 +7414,3 @@ declare module "sequelize" {
     logic: string | Object
   }
 }
-

@@ -191,7 +191,7 @@ const Service = seq.define("service", {
     name: { type: Sequelize.STRING },
 });
 
-/*:: 
+/*::
 type Err = {|
     code: string,
     message: string,
@@ -206,8 +206,8 @@ const errorList /*: Array<Err> */ = [
     { code: "USER_INVAGE", message: "invalid age" },
 ];
 
-const errorMap /*: {[string]: Err} */ = errorList.reduce((acc, err) => { 
-    acc[err.code] = err; return acc 
+const errorMap /*: {[string]: Err} */ = errorList.reduce((acc, err) => {
+    acc[err.code] = err; return acc
 } , {});
 
 function errorResult(...codes) {
@@ -231,9 +231,9 @@ const users = {
     },
     search(args /*: SearchArgs */) /*: Array<UserT> */ {
         let {
-            q="", 
-            limit=defaults.search.limit, 
-            offset=defaults.search.offset, 
+            q="",
+            limit=defaults.search.limit,
+            offset=defaults.search.offset,
         } = args;
         let {or, like} = Op;
         return User.findAll({
@@ -254,9 +254,9 @@ const feedbacks = {
         await Feedback.hasOne(User, { foreignKey: "id"} );
     },
     async register(
-        args /*: {| 
-                comment: string, 
-                userId: number 
+        args /*: {|
+                comment: string,
+                userId: number
             |} */
     ) /*: Promise<Result<FeedbackT>> */{
         if ( ! users.exists(args.userId)) {
@@ -270,9 +270,9 @@ const feedbacks = {
     },
     search(args /*: SearchArgs */) /*: Array<FeedbackT> */ {
         let {
-            q="", 
-            limit=defaults.search.limit, 
-            offset=defaults.search.offset, 
+            q="",
+            limit=defaults.search.limit,
+            offset=defaults.search.offset,
         } = args;
         let {or, like} = Op;
         return Feedback.findAll({
@@ -301,9 +301,9 @@ const offices = {
     },
     search(args /*: SearchArgs */) /*: Array<OfficeT> */ {
         let {
-            q="", 
-            limit=defaults.search.limit, 
-            offset=defaults.search.offset, 
+            q="",
+            limit=defaults.search.limit,
+            offset=defaults.search.offset,
         } = args;
         let {or, like} = Op;
         return Office.findAll({
@@ -332,9 +332,9 @@ const services = {
     },
     search(args /*: SearchArgs */) /*: Array<ServiceT> */ {
         let {
-            q="", 
-            limit=defaults.search.limit, 
-            offset=defaults.search.offset, 
+            q="",
+            limit=defaults.search.limit,
+            offset=defaults.search.offset,
         } = args;
         let {or, like} = Op;
         return Service.findAll({
@@ -370,9 +370,9 @@ const userCategories = {
     },
     search(args /*: SearchArgs */) /*: Array<ServiceT> */ {
         let {
-            q="", 
-            limit=defaults.search.limit, 
-            offset=defaults.search.offset, 
+            q="",
+            limit=defaults.search.limit,
+            offset=defaults.search.offset,
         } = args;
         let {or, like} = Op;
         return UserCategory.findAll({
@@ -384,7 +384,7 @@ const userCategories = {
     },
 }
 
-/*:: 
+/*::
 type init_args = {|
     force?: boolean,
 |}

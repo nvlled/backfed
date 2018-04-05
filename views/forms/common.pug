@@ -41,7 +41,7 @@ mixin respondentForm(args)
           - var checked = args.checked || args.categories[0].code
           each cat in (args.categories||[])
             span
-              input(type="radio", name="category" value=cat.code, 
+              input(type="radio", name="category" value=cat.code,
                     checked=(checked==cat.code))
               label #{cat.name}
               span.spc
@@ -53,36 +53,40 @@ mixin respondentForm(args)
           input(type="checkbox", name="category" value="other")
           label Others, specify
           input.spc10(name="other-input")
-        
-      if (args.error)
-        label 
-        span.info.center.error= args.error
-      label 
+
+      label
+      div.info.center
+        +showErrors(args.errors)
+
+      label Comment / Feedback
+      div.info.bgred
+        textarea.fillw(name="comment")
+
+      label
       input(type="submit", value="submit")
+
       +addStyleOnce("/public/styles/autocom.css")
       +addScriptOnce("/public/scripts/lib/autocomplete.min.js")
       +addScriptOnce("/public/scripts/autocom.js")
-      
+
       script
         | autocom.enable({
         |   fields: ["code", "name"],
-        |   format: "{name}", 
-        |   input:  "input[name=office]", 
-        |   url:    "/api/fetch/offices", 
+        |   format: "{name}",
+        |   input:  "input[name=office]",
+        |   url:    "/api/fetch/offices",
         |   fetchOnce: true,
         | })
 
       script
         | autocom.enable({
         |   fields: ["code", "name"],
-        |   format: "{name}", 
-        |   input:  "input[name=service-avail]", 
-        |   url:    "/api/fetch/services", 
+        |   format: "{name}",
+        |   input:  "input[name=service-avail]",
+        |   url:    "/api/fetch/services",
         |   inputParams: ["input[name=office]"],
         | })
 
 
 mixin surveyHeader(args)
   p blah
-
-
