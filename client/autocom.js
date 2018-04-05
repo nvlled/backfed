@@ -27,7 +27,6 @@ var util = {
     },
 }
 
-
 var autocom = {
 
     init: function() {
@@ -71,6 +70,8 @@ var autocom = {
         var formatString = args.format;
         var fields       = args.fields || [];
         var inputParams  = args.inputParams || [];
+        var onSelect     = args.onSelect;
+        var output       = args.output || {};
 
         if (!container) {
             var scripts = document.scripts;
@@ -146,20 +147,25 @@ var autocom = {
 
 
         var queryParams = new URLSearchParams(readInputParams(inputParams));
-        var request = fetch(url+"?"+queryParams.toString());
+        var requestData = null;
+        var request = function() {
+            return fetch(url+"?"+queryParams.toString());
+        }
 
         autocomplete(input, { hint: false }, [
             {
                 source: function(query, cb) {
-                    if ( ! fetchOnce) {
-                        request = fetch(url);
+                    if (fetchOnce && requestData) {
+                        cb(filter(query, requestData));
+                        return;
                     }
-                    request.then(function(resp) {
+                    request().then(function(resp) {
                         if (resp.status != 200) {
                             console.log("unable to fetch", url, "status:"+resp.status);
                             return;
                         }
                         resp.json().then(function(data) {
+                            requestData = data;
                             console.log("data", data);
                             cb(filter(query, data));
                         });
@@ -177,7 +183,33 @@ var autocom = {
         ]).on('autocomplete:selected', function(event, suggestion, dataset) {
             //input.value = format(suggestion);
             console.log('dataset: ' + dataset + ', ' + suggestion.name);
+            Object.keys(output).forEach(function(k) {
+                var sel = output[k];
+                var node = container.querySelector(sel);
+                if (!node) {
+                    console.warn(
+                        "cannot output " + k + " to  " + sel +
+                        ": missing DOM elem"
+                    );
+                    return;
+                }
+                if (node.tagName == "INPUT")
+                    node.value = suggestion[k];
+                else
+                    node.textContent = suggestion[k];
+            });
+            if (typeof onSelect == "function") {
+                onSelect(suggestion, {
+                    container: container,
+                    input: input,
+                });
+            }
         });
+
+        input.addEventListener("focus", function() {
+            input.setSelectionRange(0, input.value.length);
+        });
+
     },
 }
 

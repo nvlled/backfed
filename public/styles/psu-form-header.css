@@ -71,8 +71,9 @@ form.respondent > label {
 }
 
 form.respondent > input,
-.info {
+form.respondent > .info {
     grid-column: 5 / -1;
+    align-self: center;
 }
 
 form.respondent textarea {

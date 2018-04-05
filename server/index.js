@@ -1,5 +1,6 @@
 // @flow
 const appdb = require("./appdb");
+const apputil = require('../shared/apputil');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,10 +14,13 @@ const {
 import type { $Request, $Response } from 'express';
 import type { UserT } from './appdb';
 
-type $Req = {
-    allparams: {[string]: string},
+export type $Req = {
+    allparams: () => {[string]: string},
     body: {[string]: string},
 } & $Request
+export type $Res = {
+} & $Response
+
 
 type Handler = ($Req, $Response) => void
 
@@ -25,9 +29,14 @@ type Handler = ($Req, $Response) => void
 const app = express();
 const appAPI = express.Router();
 
+// Make the apputil available to view globals
+global.apputil = apputil;
+
 app.set("view options", {
     basedir: "views",
-    delimiter: '?'
+    delimiter: '?',
+    globals: ["apputil"],
+    self: true,
 });
 
 app.set("view engine", "pug");
@@ -49,8 +58,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use( (req /*:$Req*/, res /*:$Response*/, next) => {
-    req.allparams = Object.assign(
+    req.allparams = () => Object.assign(
         {},
+        req.params,
         req.query,
         req.body,
     );
@@ -66,10 +76,11 @@ appAPI.use( (req /*:$Req*/, res /*:$Response*/, next) => {
 /* -------------- handlers --------------*/
 
 appAPI.get("/fetch/:source", async (req /*:$Req*/, res /*:$Response*/) => {
-    let source = req.params.source;
+    let params = req.allparams();
+    let source = params.source
     let args = {
-        offset: parseInt(req.allparams.page),
-        limit:  parseInt(req.allparams.pagesize),
+        offset: parseInt(params.page),
+        limit:  parseInt(params.pagesize),
     }
     let result = await appdb.fetch(source, args);
     res.json(result);
@@ -77,45 +88,7 @@ appAPI.get("/fetch/:source", async (req /*:$Req*/, res /*:$Response*/) => {
 
 app.use("/api", appAPI);
 
-app.get("/", async (req /*:$Req*/, res /*:$Response*/) => {
-    let params = req.params;
-    let {office, serviceAvail, age} = params;
-
-    let categories = await appdb.userCategories.search({});
-    res.render("index", {
-        categories,
-        formData: params,
-    });
-})
-
-app.post("/", async (req /*:$Req*/, res /*:$Response*/) => {
-
-    let data /*:{[string]: string}*/ = req.body;
-    console.log("data", data);
-    let result = await appdb.users.register({
-        age: parseInt(data.age),
-        categoryCode: data.category,
-    });
-    if (result.isLeft()) {
-        //return res.send(JSON.stringify({errors: result.value}));
-        let {office, serviceAvail, age} = data;
-
-        let categories = await appdb.userCategories.search({});
-        res.render("index", {
-            errors: result.value,
-            categories,
-            formData: data,
-        });
-        return;
-    }
-    let user /*: UserT */ = result.value;
-    let fd = await appdb.feedbacks.register({
-        comment: data.comment,
-        userId: user.id || 0,
-    });
-
-    res.send(JSON.stringify([user, fd]));
-});
+app.use("/", require("./routes/respondent"));
 
 app.get("/test", (req /*:$Req*/, res /*:$Response*/) => {
     res.render("test.ejs");
@@ -123,7 +96,6 @@ app.get("/test", (req /*:$Req*/, res /*:$Response*/) => {
 
 app.use("*", (req /*:$Req*/, res /*:$Response*/) => {
     res.sendStatus(404);
-    res.send("nope");
 });
 
 let port = 5000;

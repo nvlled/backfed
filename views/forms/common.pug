@@ -26,15 +26,50 @@ mixin formHeader(args)
     div.date.border
       | date: #{args.date || (new Date).toDateString()}
 
+mixin respondentConfirmForm(args)
+    form.respondent(action=args.formAction, method="post")
+      div.header.border profile of the respondent
+      label Office / Department visited
+      div.info
+        div= args.office
+        input(type="hidden", name="office", value=args.office)
+      label Nature of service availed of
+      div.info
+        div= args.serviceAvail
+        input(type="hidden", name="serviceAvail", value=args.serviceAvail)
+      label Age
+      div.info
+        div= args.age
+        input(type="hidden", name="age", value=args.age)
+      label Client Category
+      div.category
+        - var category = (args.category || {})
+        span= category.name
+        input(type="hidden", name="category", value=category.code)
+
+      label Comment / Feedback
+      div.info
+        | !{apputil.breakLines(args.comment)}
+        input(type="hidden", name="comment", value=args.comment)
+
+      label
+      div.info.grid12
+        input.grid12-left(type="submit", name="action", value="go back")
+        input.grid12-right.pad10(type="submit", name="action", value="confirm submit")
+
 mixin respondentForm(args)
-    form.respondent(action=args.action, method="post")
+    form.respondent(action=args.formAction, method="post")
+      div
+        input(type="hidden", name="officeCode")
+        input(type="hidden", name="serviceCode")
+
       div.header.border profile of the respondent
       label Office / Department visited
       div.info
         input(name="office", value=args.office)
       label Nature of service availed of
       div.info
-        input(name="service-avail", value=args.serviceAvail)
+        input(name="serviceAvail", value=args.serviceAvail)
       label Age
       input(name="age", value=args.age)
       label Client Category
@@ -42,11 +77,11 @@ mixin respondentForm(args)
         if (!args.categories)
           em (none)
         else
-          - var checked = args.checked || args.categories[0].code
+          - var category = args.category || args.categories[0].code
           each cat in (args.categories||[])
             span
               input(type="radio", name="category" value=cat.code,
-                    checked=(checked==cat.code))
+                    checked=(category.code==cat.code))
               label #{cat.name}
               span.spc
               if (cat.hasData)
@@ -63,8 +98,8 @@ mixin respondentForm(args)
         +showErrors(args.errors)
 
       label Comment / Feedback
-      div.info.bgred
-        textarea.fillw(name="comment")
+      div.info
+        textarea.fillw(name="comment")= args.comment
 
       label
       input(type="submit", value="submit")
@@ -80,15 +115,21 @@ mixin respondentForm(args)
         |   input:  "input[name=office]",
         |   url:    "/api/fetch/offices",
         |   fetchOnce: true,
+        |   output: {
+        |       code: "input[name=officeCode]",
+        |   }
         | })
 
       script
         | autocom.enable({
         |   fields: ["code", "name"],
         |   format: "{name}",
-        |   input:  "input[name=service-avail]",
+        |   input:  "input[name=serviceAvail]",
         |   url:    "/api/fetch/services",
         |   inputParams: ["input[name=office]"],
+        |   output: {
+        |       code: "input[name=serviceCode]",
+        |   }
         | })
 
 

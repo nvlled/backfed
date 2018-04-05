@@ -121,13 +121,14 @@ export type UserT = Model<any> & UserData & {
     fullname?: string,
 }
 
-export type FeedbackT = Model<any> & {
+export type FeedbackData = {
     id?: number,
     userId: number,
     comment: string,
     officeCode: string,
     serviceCode: string,
-
+}
+export type FeedbackT = Model<any> & FeedbackData & {
     getUser(): UserT,
     setUser(UserT): void,
     save(): void,
@@ -230,6 +231,12 @@ const users = {
         let model = await User.create(userData);
         return Right(model);
     },
+    async validate(userData /*: UserData */)
+    {
+        if ( !userData.age)
+            return errorResult("USER_INVAGE");
+        return Right(true);
+    },
     get(id /*: number */) /*: UserT */ {
         return User.findById(id);
     },
@@ -258,6 +265,7 @@ const feedbacks = {
         await Feedback.hasOne(User, { foreignKey: "id"} );
     },
     async register(
+        // TODO: change to FeedbackData
         args /*: {|
                 comment: string,
                 userId: number
@@ -268,6 +276,10 @@ const feedbacks = {
         }
         let feed = await Feedback.create(args);
         return Right(feed);
+    },
+    async validate(data /*: FeedbackData */)
+    {
+        return Right(true);
     },
     get(id /*: number */) /*: Result<FeedbackT> */ {
         return Feedback.findById(id);
