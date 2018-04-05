@@ -6,9 +6,8 @@
 .bgred { background-color: red; }
 .bggreen { background-color: green; }
 
-.fill {
+.fillw {
     width: 100% !important;
-    height: 100% !important;
     display: block;
 }
 

@@ -24,6 +24,11 @@ const mysql = require("mysql");
 const Sequelize = require('sequelize').default;
 const Op = Sequelize.Op;
 
+const {
+    Right, Left
+// $FlowFixMe: nope
+} = require("funfix");
+
 const seq = new Sequelize('backfed', 'nvlled', '', {
     host: 'localhost',
     dialect: 'mysql',
@@ -218,8 +223,7 @@ const users = {
     async init(force /*:boolean*/ = true) {
         await User.sync({force});
     },
-    async register(userData /*: UserData */) 
-    /*: Promise<Result<UserT>> */
+    async register(userData /*: UserData */)
     {
         if ( !userData.age)
             return errorResult("USER_INVAGE");
@@ -244,8 +248,8 @@ const users = {
         });
     },
     exists(id /*: number */) /*:boolean*/ {
-        return false;
-    }
+        return !! User.findById(id);
+    },
 }
 
 const feedbacks = {

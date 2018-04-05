@@ -75,6 +75,10 @@ form.respondent > input,
     grid-column: 5 / -1;
 }
 
+form.respondent textarea {
+    height: 100px;
+}
+
 form.respondent > input[type=submit] {
     margin: 10px;
     padding: 10px 5px;

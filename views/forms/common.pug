@@ -10,6 +10,10 @@ mixin addStyleOnce(href)
     - this.styles[href] = true
     link(rel="stylesheet", href=href)
 
+mixin showErrors(errors)
+  each err in (errors || [])
+    div.error= err.message
+
 mixin formHeader(args)
   div.psu-form-header
     link(rel="stylesheet", href="/public/styles/psu-form-header.css")
@@ -19,7 +23,7 @@ mixin formHeader(args)
     div.university-campus= args.universityCampus
     div.sem-sy.border
       span.sem  #{args.semester} semester : A.Y. #{args.schoolYear}
-    div.date.border 
+    div.date.border
       | date: #{args.date || (new Date).toDateString()}
 
 mixin respondentForm(args)

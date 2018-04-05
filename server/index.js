@@ -4,13 +4,19 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const {
+    Right, Left
+// $FlowFixMe: nope
+} = require("funfix");
+
 /*::
 import type { $Request, $Response } from 'express';
+import type { UserT } from './appdb';
 
-type $Req = $Request & {
+type $Req = {
     allparams: {[string]: string},
-    x: {[string]: string},
-}
+    body: {[string]: string},
+} & $Request
 
 type Handler = ($Req, $Response) => void
 
@@ -71,18 +77,6 @@ appAPI.get("/fetch/:source", async (req /*:$Req*/, res /*:$Response*/) => {
 
 app.use("/api", appAPI);
 
-app.post("/", async (req /*:$Req*/, res /*:$Response*/) => {
-    console.log("body", req.body);
-
-    let data /*:{[string]: string}*/ = req.x;
-    let user = await appdb.users.register({
-        age: parseInt(data.age),
-        categoryCode: data.category,
-    });
-
-    res.send("okay");
-});
-
 app.get("/", async (req /*:$Req*/, res /*:$Response*/) => {
     let params = req.params;
     let {office, serviceAvail, age} = params;
@@ -93,6 +87,35 @@ app.get("/", async (req /*:$Req*/, res /*:$Response*/) => {
         formData: params,
     });
 })
+
+app.post("/", async (req /*:$Req*/, res /*:$Response*/) => {
+
+    let data /*:{[string]: string}*/ = req.body;
+    console.log("data", data);
+    let result = await appdb.users.register({
+        age: parseInt(data.age),
+        categoryCode: data.category,
+    });
+    if (result.isLeft()) {
+        //return res.send(JSON.stringify({errors: result.value}));
+        let {office, serviceAvail, age} = data;
+
+        let categories = await appdb.userCategories.search({});
+        res.render("index", {
+            errors: result.value,
+            categories,
+            formData: data,
+        });
+        return;
+    }
+    let user /*: UserT */ = result.value;
+    let fd = await appdb.feedbacks.register({
+        comment: data.comment,
+        userId: user.id || 0,
+    });
+
+    res.send(JSON.stringify([user, fd]));
+});
 
 app.get("/test", (req /*:$Req*/, res /*:$Response*/) => {
     res.render("test.ejs");
