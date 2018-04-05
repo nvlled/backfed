@@ -1,0 +1,14 @@
+[ignore]
+.*/node_modules/.*
+
+[include]
+./server
+
+[libs]
+./node_modules/funfix-core/dist/.*.flow
+
+[lints]
+
+[options]
+
+[strict]

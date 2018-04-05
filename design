@@ -1,0 +1,102 @@
+
+babel support
+
+babel-build/client/*.js
+
+
+page.pug
++includeScript("/public/script/abc.js")
+    // tries to serve babel-build/client/abc.js first
+    // then 
+
+------------------------------------------------------------------
+
+[LOGO] | Customer feedback / suggestions / complaints form
+         Pangasinan State University
+         Urdaneta City Campus
+
+__ Semester : A.Y 20__-20__     | Date: ____________
+
+Office/ Department Visited:   ____________________
+Nature of service availed of: _____________________
+Age: ____________ | Sex: _____________
+
+Client Category: (check one?)
+    [ ] student     [ ] supplier    [ ] non-teaching
+    [ ] faculty     [ ] regulatory body [ ] community
+    [ ] industry    [ ] alumni      
+    [ ] others, specify: __________
+
+Comment / Feedback:
+____________________________________
+____________________________________
+____________________________________
+____________________________________
+____________________________________
+
+
+Processed by:
+Signature?: ____________
+Office:     |v         |
+
+
+
+--------------------------------------------------------------
+
+[LOGO] | Customer Satisfaction Survey
+         Pangasinan State University
+         Urdaneta City, campus
+
+Office/ Department Visited:   ____________________
+Nature of service availed of: _____________________
+Age: ____________ | Sex: _____________
+
+Client Category: (check one?)
+    [ ] student     [ ] supplier    [ ] non-teaching
+    [ ] faculty     [ ] regulatory body [ ] community
+    [ ] industry    [ ] Alumni      
+    [ ] Others, specify: __________
+
+------------------------
+
+Direction: Below are qualifying statements to describe the servies provided by the Campus/University. Please rate your degree of satisfaction using the scale below:
+    5 - Very Highly Satisfied
+    4 - Highly Satisfied
+    3 - Somewhat Satisfied
+    2 - Slightly Satisfied
+    1 - Not Satisfied
+
+Indicators                                           | Degree of satisfaction      |
+                                                     |  1  |  2  |  3  |  4  |  5  |
+------------------------------------------------------------------------------------
+A. Timeliness
+    1. The services provided by the office were      |  1  |  2  |  3  |  4  |  5  |
+       delivered within the minimum waiting time.    |     |     |     |     |     |
+    2. The services provided by the office were quick|  1  |  2  |  3  |  4  |  5  |
+                                                     |     |     |     |     |     |
+B. Access
+    1. The services requested were made available as per request
+    2. The services of the needed  staff were readily available
+C. Convenience
+    1. The services requested were obtained with minimum inconvenience
+    2. The services were made available with ease and comfort
+
+D. Staff attitude
+    1. The staff providers were courteous and polite in providing the requested service
+    2. The staff providers are friendly to the clients
+E. End Result
+    1. The requested output on the service availed of were complete.
+    2. The requested output on the services availed of were of standard quality.
+
+Where are your recommendations/suggestions so the Campus/University can serve you better
+and improve the quality of our services?
+______________________________________________________________
+______________________________________________________________
+______________________________________________________________
+______________________________________________________________
+______________________________________________________________
+______________________________________________________________
+______________________________________________________________
+______________________________________________________________
+
+Thank you very much for completing the survey!

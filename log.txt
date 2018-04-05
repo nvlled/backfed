@@ -1,0 +1,26 @@
+Wed Apr  4 21:16:07 +08 2018
+
+Okay, that was quite an unproductive moment. 
+Basically, the problem was that I couldn't
+quite figure out how to import types and
+functions from funfix module. It's
+two problem at once that I'm not sure
+which is which.
+
+Strangely enough, I don't need to import
+the functions and classes from funfix.
+Just npeminstalling them makes them
+available in the global namespace. I'm
+probably doing something wrong since
+it's polluting the global namespace. But
+hey, it's what I get from avoiding the
+webpack tooling, since I can't
+use "import * as blah from 'blah'".
+
+As for the types, I don't need to 
+import anything, I just dumped
+them on the global namespace. Again,
+I'm probably doing something wrong, but
+it doesn't really matter since I just
+wanted the Either type for a typesafe
+error handling.

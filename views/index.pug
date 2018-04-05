@@ -1,0 +1,16 @@
+extends layout.pug
+
+block scripts
+
+append content
+  h1= title
+  +formHeader({
+    title: "Customer Feedback / Suggestions / Complaints Form",
+    universityName: "Pangasinan State University",
+    universityCampus: "Urdaneta City Campus",
+    semester: "1st",
+    schoolYear: "2017-2018",
+  })
+  +respondentForm(Object.assign({
+    categories: categories,
+  }, formData))

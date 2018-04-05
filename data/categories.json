@@ -1,0 +1,11 @@
+[
+      {"code": "stud", "name": "Students"},
+      {"code": "supp", "name": "Supplier"},
+      {"code": "ntea", "name": "Non-Teaching"},
+      {"code": "fact", "name": "Faculty"},
+      {"code": "regb", "name": "Regulatory Body"},
+      {"code": "comm", "name": "Community"},
+      {"code": "indu", "name": "Industry"},
+      {"code": "alum", "name": "Alumni"},
+      {"code": "othr", "name": "Other", "hasData": true}
+]

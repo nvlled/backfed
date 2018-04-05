@@ -1,0 +1,14 @@
+html
+  head
+    title My Site - #{title}
+    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/public/styles/normalize.css")
+    link(rel="stylesheet", href="/public/styles/util.css")
+    link(rel="stylesheet", href="/public/styles/site.css")
+    block scripts
+    include forms/common.pug
+  body
+    div.site-content
+      block content
+    block foot
+      #footer

@@ -1,0 +1,88 @@
+mixin addScriptOnce(src)
+  - this.scripts = this.scripts || {};
+  if (!this.scripts[src])
+    - this.scripts[src] = true
+    script(src=src)
+
+mixin addStyleOnce(href)
+  - this.styles = this.styles || {};
+  if (!this.styles[href])
+    - this.styles[href] = true
+    link(rel="stylesheet", href=href)
+
+mixin formHeader(args)
+  div.psu-form-header
+    link(rel="stylesheet", href="/public/styles/psu-form-header.css")
+    img(class="logo", src="/public/images/psu.png")
+    h1.form-title= args.title
+    div.university-name= args.universityName
+    div.university-campus= args.universityCampus
+    div.sem-sy.border
+      span.sem  #{args.semester} semester : A.Y. #{args.schoolYear}
+    div.date.border 
+      | date: #{args.date || (new Date).toDateString()}
+
+mixin respondentForm(args)
+    form.respondent(action=args.action, method="post")
+      div.header.border profile of the respondent
+      label Office / Department visited
+      div.info
+        input(name="office", value=args.office)
+      label Nature of service availed of
+      div.info
+        input(name="service-avail", value=args.serviceAvail)
+      label Age
+      input(name="age", value=args.age)
+      label Client Category
+      div.category
+        if (!args.categories)
+          em (none)
+        else
+          - var checked = args.checked || args.categories[0].code
+          each cat in (args.categories||[])
+            span
+              input(type="radio", name="category" value=cat.code, 
+                    checked=(checked==cat.code))
+              label #{cat.name}
+              span.spc
+              if (cat.hasData)
+                input(name="data-"+cat.code)
+
+      //-
+        span.info.pad10
+          input(type="checkbox", name="category" value="other")
+          label Others, specify
+          input.spc10(name="other-input")
+        
+      if (args.error)
+        label 
+        span.info.center.error= args.error
+      label 
+      input(type="submit", value="submit")
+      +addStyleOnce("/public/styles/autocom.css")
+      +addScriptOnce("/public/scripts/lib/autocomplete.min.js")
+      +addScriptOnce("/public/scripts/autocom.js")
+      
+      script
+        | autocom.enable({
+        |   fields: ["code", "name"],
+        |   format: "{name}", 
+        |   input:  "input[name=office]", 
+        |   url:    "/api/fetch/offices", 
+        |   fetchOnce: true,
+        | })
+
+      script
+        | autocom.enable({
+        |   fields: ["code", "name"],
+        |   format: "{name}", 
+        |   input:  "input[name=service-avail]", 
+        |   url:    "/api/fetch/services", 
+        |   inputParams: ["input[name=office]"],
+        | })
+
+
+mixin surveyHeader(args)
+  p blah
+
+
