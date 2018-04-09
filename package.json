@@ -22,5 +22,9 @@
   },
   "devDependencies": {
     "flow-bin": "^0.68.0"
+  },
+  "nodemonConfig": {
+      "ignore": ["public/*", "views/*"],
+      "delay": "2500"
   }
 }
