@@ -1,3 +1,9 @@
+mixin reloadPageOnFocus()
+    script
+      |window.addEventListener("focus", function() {
+      | window.location.reload();
+      |});
+
 mixin addScriptOnce(src)
   - this.scripts = this.scripts || {};
   if (!this.scripts[src])
@@ -17,7 +23,8 @@ mixin showErrors(errors)
 mixin formHeader(args)
   div.psu-form-header
     link(rel="stylesheet", href="/public/styles/psu-form-header.css")
-    img(class="logo", src="/public/images/psu.png")
+    a(href=args.logoHref || "/")
+      img(class="logo", src="/public/images/psu.png")
     h1.form-title= args.title
     div.university-name= args.universityName
     div.university-campus= args.universityCampus
@@ -30,6 +37,9 @@ mixin respondentConfirmForm(args)
     form.respondent(action=args.formAction, method="post")
       div.header.border profile of the respondent
       label Office / Department visited
+      input(type="hidden", name="officeCode", value=args.officeCode)
+      input(type="hidden", name="serviceCode", value=args.serviceCode)
+      input(type="hidden", name="categoryData", value=args.categoryData)
       div.info
         div= args.office
         input(type="hidden", name="office", value=args.office)
@@ -43,9 +53,8 @@ mixin respondentConfirmForm(args)
         input(type="hidden", name="age", value=args.age)
       label Client Category
       div.category
-        - var category = (args.category || {})
-        span= category.name
-        input(type="hidden", name="category", value=category.code)
+        span= args.categoryName + "("+args.category+")"
+        input(type="hidden", name="category", value=args.category)
 
       label Comment / Feedback
       div.info

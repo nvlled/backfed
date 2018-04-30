@@ -110,7 +110,7 @@ var autocom = {
         }
 
         var filter = function(query, data) {
-            query = query.toLowerCase();
+            query = query.toLowerCase().trim();
             return data.filter(matches);
 
             function matches(item) {
@@ -152,7 +152,7 @@ var autocom = {
             return fetch(url+"?"+queryParams.toString());
         }
 
-        autocomplete(input, { hint: false }, [
+        autocomplete(input, { openOnFocus: true, hint: true }, [
             {
                 source: function(query, cb) {
                     if (fetchOnce && requestData) {

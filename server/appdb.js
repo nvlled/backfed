@@ -115,6 +115,7 @@ export type UserData = {
     lastname?: string,
     age: number,
     categoryCode?: string,
+    categoryData?: string,
 }
 export type UserT = Model<any> & UserData & {
     id?: number,
@@ -166,6 +167,7 @@ const User = seq.define("user", {
     lastname:  { type: Sequelize.STRING, },
     age:       { type: Sequelize.STRING, },
     categoryCode: { type: Sequelize.STRING, },
+    categoryData: { type: Sequelize.STRING, },
 }, {
     getterMethods: {
         fullname() {
@@ -268,6 +270,8 @@ const feedbacks = {
         // TODO: change to FeedbackData
         args /*: {|
                 comment: string,
+                officeCode: string,
+                serviceCode: string,
                 userId: number
             |} */
     ) /*: Promise<Result<FeedbackT>> */{
@@ -397,6 +401,9 @@ const userCategories = {
                 map("code", map(like, `%${q}%`)),
             ]),
         });
+    },
+    get(id /*: number */) /*: UserT */ {
+        return User.findById(id);
     },
 }
 
